@@ -16,7 +16,8 @@ Route::get('/', function () {
     $events = [];
 
     if (Auth::check()) {
-        $events = Event::whereDate('start', '>=', now())
+        $events = Event::where('user_id', Auth::id())
+        ->whereDate('start', '>=', now())
             ->orderBy('start')
             ->take(5)
             ->get();

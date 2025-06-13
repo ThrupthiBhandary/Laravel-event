@@ -16,7 +16,10 @@ class EventController extends Controller
     // Fetch all events (used by FullCalendar)
     public function fetch()
     {
-       $events = Event::select('id', 'title', 'start', 'end', 'color', 'category')->get();
+      $events = Event::where('user_id', Auth::id())
+               ->select('id', 'title', 'start', 'end', 'color', 'category')
+               ->get();
+
 
 $formatted = $events->map(function ($event) {
     return [

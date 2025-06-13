@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::table('events', function (Blueprint $table) {
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    });
-}
-
+    public function up(): void
+    {
+        Schema::table('events', function (Blueprint $table) {
+            if (!Schema::hasColumn('events', 'user_id')) {
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            }
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -23,7 +24,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            //
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 };
